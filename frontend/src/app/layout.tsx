@@ -26,8 +26,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
+      <body
+        className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white"
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }
