@@ -206,7 +206,7 @@ class MusicGenServer:
             categories=categories
         )
 
-    @modal.fastapi_endpoint(method="POST")
+    @modal.fastapi_endpoint(method="POST", requires_proxy_auth=True)
     def generate(self) -> GenerateMusicResponse:
         output_dir = "/tmp/outputs"
         os.makedirs(output_dir, exist_ok=True)
@@ -230,7 +230,7 @@ class MusicGenServer:
 
         return GenerateMusicResponse(audio_data=audio_b64)
 
-    @modal.fastapi_endpoint(method="POST")
+    @modal.fastapi_endpoint(method="POST", requires_proxy_auth=True)
     def generate_from_description(self, request: GenerateFromDescriptionRequest) -> GenerateMusicResponseS3:
         # Generating a prompt
         prompt = self.generate_prompt(request.full_described_song)
@@ -246,15 +246,15 @@ class MusicGenServer:
             description_for_categorization=request.full_described_song, **request.model_dump(exclude={"full_described_song"})
         )
 
-    @modal.fastapi_endpoint(method="POST")
+    @modal.fastapi_endpoint(method="POST", requires_proxy_auth=True)
     def generate_with_lyrics(self, request: GenerateWithCustomLyricsRequest) -> GenerateMusicResponseS3:
         return self.generate_and_upload_to_s3(
             prompt=request.prompt,
             lyrics=request.lyrics,
-            description_for_categorization=request.prompt, **request.model_dump()
+            description_for_categorization=request.prompt, **request.model_dump(exclude={"prompt", "lyrics"})
         )
 
-    @modal.fastapi_endpoint(method="POST")
+    @modal.fastapi_endpoint(method="POST", requires_proxy_auth=True)
     def generate_with_described(self, request: GenerateWithDescribedLyricsRequest) -> GenerateMusicResponseS3:
         # Generate lyrics
         lyrics = ""
@@ -264,18 +264,19 @@ class MusicGenServer:
         return self.generate_and_upload_to_s3(
             prompt=request.prompt,
             lyrics=lyrics,
-            description_for_categorization=request.prompt, **request.model_dump(exclude={"described_lyrics"})
+            description_for_categorization=request.prompt, **request.model_dump(exclude={"described_lyrics", "prompt"})
         )
 
 
 @app.local_entrypoint()
 def main():
     server = MusicGenServer()
-    endpoint_url = server.generate_from_description.get_web_url()
+    endpoint_url = server.generate_with_described_lyrics.get_web_url()
 
-    request_data = GenerateFromDescriptionRequest(
-        full_described_song="A kenya, swahili, sheng rap song about the struggles of a young man",
-        guidance_scale=7.5
+    request_data = GenerateWithDescribedLyricsRequest(
+        prompt="90s hip-hop, East coast",
+        described_lyrics="Lyrics about a developer who has  just complete the Bachelors Degree in Computer Science",
+        guidance_scale=15
     )
 
     payload = request_data.model_dump()
