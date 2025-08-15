@@ -4,6 +4,9 @@ import os
 import base64
 from pydantic import BaseModel
 import requests
+from typing import List
+from prompts import PROMPT_GENERATOR_PROMPT
+from prompts import LYRICS_GENERATOR_PROMPT
 
 app = modal.App("ai-music-generator")
 
@@ -23,6 +26,34 @@ hf_volume = modal.Volume.from_name("qwen-hf-models", create_if_missing=True)
 
 
 ai_music_gen_secrets = modal.Secret.from_name("ai-music-gen-secret")
+
+
+class AudioGenerationBase(BaseModel):
+    audio_duration: float = 150.0
+    seed: int = -1
+    guidance_scale: float = 15.0
+    infer_step: int = 60
+    instrumental: bool = False
+
+
+class GenerateFromDescriptionRequest(AudioGenerationBase):
+    full_described_song: str
+
+
+class GenerateWithCustomLyricsRequest(AudioGenerationBase):
+    prompt: str
+    lyrics: str
+
+
+class GenerateWithDescribedLyricsRequest(AudioGenerationBase):
+    prompt: str
+    described_lyrics: str
+
+
+class GenerateMusicResponseS3(BaseModel):
+    s3_key: str
+    cover_image_s3_key: str
+    categories: List[str]
 
 
 class GenerateMusicResponse(BaseModel):
@@ -70,8 +101,61 @@ class MusicGenServer:
         )
         self.image_pipe.to("cuda")
 
+    def prompt_qwen(self, question: str):
+        messages = [
+            {"role": "user", "content": question}
+        ]
+        text = self.tokenizer.apply_chat_template(
+            messages,
+            tokenize=False,
+            add_generation_prompt=True
+        )
+        model_inputs = self.tokenizer(
+            [text], return_tensors="pt").to(self.llm_model.device)
+
+        generated_ids = self.llm_model.generate(
+            model_inputs.input_ids,
+            max_new_tokens=512
+        )
+        generated_ids = [
+            output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
+        ]
+
+        response = self.tokenizer.batch_decode(
+            generated_ids, skip_special_tokens=True)[0]
+
+        return response
+
+    def generate_prompt(self, description: str):
+        # Insert description into template
+        full_prompt = PROMPT_GENERATOR_PROMPT.format(user_prompt=description)
+
+        # Run LLM inference and return that
+        return self.prompt_qwen(full_prompt)
+
+    def generate_lyrics(self, description: str):
+        # Insert description into template
+        full_prompt = LYRICS_GENERATOR_PROMPT.format(descriptionn=description)
+
+        # Run LLM inference and return that
+        return self.prompt_qwen(full_prompt)
+
+    def generate_and_upload_to_s3(
+        self,
+        prompt: str,
+        lyrics: str,
+        instrumental: bool,
+        audio_duration: float,
+        infer_step: int,
+        guidance_scale: float,
+        seed: int,
+    ) -> GenerateMusicResponseS3:
+        final_lyrics = "[instrumentals]" if instrumental else lyrics
+        print(f"Generated Lyrics: {final_lyrics}")
+        print(f"Prompt: {prompt}")
+
     @modal.fastapi_endpoint(method="POST")
-    def generate(self):
+    def generate(self) -> GenerateMusicResponse:
         output_dir = "/tmp/outputs"
         os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(output_dir, f"{uuid.uuid4()}.wav")
@@ -93,6 +177,26 @@ class MusicGenServer:
         os.remove(output_path)
 
         return GenerateMusicResponse(audio_data=audio_b64)
+
+    @modal.fastapi_endpoint(method="POST")
+    def generate_from_description(self, request: GenerateFromDescriptionRequest) -> GenerateMusicResponseS3:
+        # Generating a prompt
+        prompt = self.generate_prompt(request.full_described_song)
+
+        # Generate lyrics
+        lyrics = ""
+        if not request.instrumental:
+            lyrics = self.generate_lyrics(request.full_described_song)
+
+    @modal.fastapi_endpoint(method="POST")
+    def generate_with_lyrics(self, request: GenerateWithCustomLyricsRequest) -> GenerateMusicResponseS3:
+
+        pass
+
+    @modal.fastapi_endpoint(method="POST")
+    def generate_with_described(self, request: GenerateWithDescribedLyricsRequest) -> GenerateMusicResponseS3:
+        # Generate lyrics
+        pass
 
 
 @app.local_entrypoint()
