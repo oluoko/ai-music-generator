@@ -1,5 +1,7 @@
 "use client";
 
+import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 interface LogoProps {
@@ -9,6 +11,7 @@ interface LogoProps {
 
 export default function Logo({ className, size = "sm" }: LogoProps) {
   const [mounted, setMounted] = useState(false);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -41,8 +44,15 @@ export default function Logo({ className, size = "sm" }: LogoProps) {
     <h1
       className={`${className} ${getSizeClasses()} inline-block align-middle font-extrabold tracking-tight`}
     >
-      <span className="text-purple-600 dark:text-purple-400">AI</span>
-      <span className="ml-2 text-white dark:text-white">Music Generator</span>
+      <span className="text-primary">AI</span>
+      <span
+        className={cn(
+          "ml-2",
+          resolvedTheme === "dark" ? "text-white" : "text-black",
+        )}
+      >
+        Music Generator
+      </span>
     </h1>
   );
 }

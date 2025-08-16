@@ -1,3 +1,4 @@
+import { Providers } from "@/components/providers";
 import "@/styles/globals.css";
 
 import { type Metadata } from "next";
@@ -22,16 +23,15 @@ export const metadata: Metadata = {
   },
 };
 
+//  bg-gradient-to-b from-[#2e026d] to-[#15162c]
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`} suppressHydrationWarning>
-      <body
-        className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white"
-        suppressHydrationWarning
-      >
-        {children}
+      <body className="min-h-screen" suppressHydrationWarning>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
