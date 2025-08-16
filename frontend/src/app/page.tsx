@@ -2,8 +2,6 @@
 
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import Logo from "@/components/logo";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Music,
   Sparkles,
@@ -15,46 +13,15 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
-import { useSignOut } from "@/hooks/use-signout";
+import HomeNav from "@/components/home-nav";
 
 export default function HomePage() {
   const { data: session } = authClient.useSession();
-  const handleLogout = useSignOut();
+
   return (
-    <div className="bg-background min-h-screen">
+    <div className="min-h-screen">
       {/* Navigation */}
-      <nav className="border-border/40 flex items-center justify-between border-b p-6">
-        <Logo />
-        <div className="flex items-center gap-4">
-          {session ? (
-            <>
-              <Button onClick={handleLogout}>Sign Out</Button>
-              <Link
-                href="/dashboard"
-                className={buttonVariants({ variant: "outline" })}
-              >
-                Dashboard
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                href="/auth/sign-in"
-                className={buttonVariants({ size: "sm" })}
-              >
-                Sign In
-              </Link>
-              <Link
-                href="/auth/sign-up"
-                className={buttonVariants({ variant: "outline", size: "sm" })}
-              >
-                Get Started
-              </Link>
-              <ThemeToggle />
-            </>
-          )}
-        </div>
-      </nav>
+      <HomeNav />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden px-4 py-32">
