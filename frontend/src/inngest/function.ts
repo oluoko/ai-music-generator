@@ -183,7 +183,7 @@ export const generateSong = inngest.createFunction(
           where: { id: userId },
           data: {
             credits: {
-              decrement: 5,
+              decrement: 3,
             },
           },
         });

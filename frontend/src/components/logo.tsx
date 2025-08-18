@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 interface LogoProps {
   className?: string;
   size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl";
+  small?: boolean;
 }
 
-export default function Logo({ className, size = "sm" }: LogoProps) {
+export default function Logo({ className, size = "sm", small }: LogoProps) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
 
@@ -42,17 +43,33 @@ export default function Logo({ className, size = "sm" }: LogoProps) {
 
   return (
     <h1
-      className={`${className} ${getSizeClasses()} inline-block align-middle font-extrabold tracking-tight`}
+      className={`${className} ${getSizeClasses()} inline-block align-middle font-black tracking-tight`}
     >
-      <span className="text-primary">AI</span>
-      <span
-        className={cn(
-          "ml-2",
-          resolvedTheme === "dark" ? "text-white" : "text-black",
-        )}
-      >
-        Music Generator
-      </span>
+      {small ? (
+        <>
+          <span className="text-primary">AI</span>
+          <span
+            className={cn(
+              "ml-2",
+              resolvedTheme === "dark" ? "text-white" : "text-black",
+            )}
+          >
+            M.G
+          </span>
+        </>
+      ) : (
+        <>
+          <span className="text-primary">AI</span>
+          <span
+            className={cn(
+              "ml-2",
+              resolvedTheme === "dark" ? "text-white" : "text-black",
+            )}
+          >
+            Music Generator
+          </span>
+        </>
+      )}
     </h1>
   );
 }

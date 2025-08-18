@@ -20,8 +20,8 @@ export function ThemeToggle({ className }: ModeToggleProps) {
 
   if (!mounted) {
     return (
-      <Skeleton className="bg-accent/70 border-foreground/40 relative inline-flex h-8 w-14 items-center rounded-full border">
-        <Skeleton className="absolute left-1 size-6 rounded-full border" />
+      <Skeleton className="bg-accent/70 border-foreground/40 relative inline-flex h-6 w-12 items-center rounded-full border">
+        <Skeleton className="absolute left-1 size-4 rounded-full border" />
       </Skeleton>
     );
   }
