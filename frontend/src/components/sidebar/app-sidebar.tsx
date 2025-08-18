@@ -38,7 +38,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
         <NavSecondary className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <div className="flex items-center justify-center gap-2">
+        <div className="my-1 flex items-center justify-center gap-2 rounded border p-2">
           <Credits />
           <Upgrade />
         </div>

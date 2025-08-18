@@ -1,6 +1,5 @@
 "use client";
 
-import { type Icon } from "@tabler/icons-react";
 import { IconLogout, IconSettings, IconUserCircle } from "@tabler/icons-react";
 
 import {
@@ -10,9 +9,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
+import { usePathname } from "next/navigation";
 
 const navSecondaryItems = [
   {
@@ -35,13 +34,18 @@ const navSecondaryItems = [
 export function NavSecondary({
   ...props
 }: ComponentPropsWithoutRef<typeof SidebarGroup>) {
+  const pathname = usePathname();
+  const isActive = (url: string) => pathname === url;
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
           {navSecondaryItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
+              <SidebarMenuButton
+                asChild
+                className={`${isActive(item.url) && "bg-primary text-primary-foreground"}`}
+              >
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
@@ -49,9 +53,6 @@ export function NavSecondary({
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <SidebarMenuItem className="ml-2">
-            <ThemeToggle />
-          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>

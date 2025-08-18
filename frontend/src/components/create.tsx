@@ -2,6 +2,7 @@
 
 import { queueSong } from "@/actions/generation";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 interface CreateSongProps {
@@ -21,7 +22,7 @@ interface CreateSongProps {
 
 export default function CreateSong({
   size,
-  variant,
+  variant = "outline",
   className,
   children,
 }: CreateSongProps) {
@@ -29,7 +30,7 @@ export default function CreateSong({
     <Button
       size={size}
       variant={variant}
-      className={className}
+      className={cn("text-foreground bg-transparent", className)}
       onClick={queueSong}
     >
       {children ?? "Generate a Song"}

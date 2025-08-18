@@ -3,33 +3,42 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import { BreadcrumbPage } from "@/components/ui/breadcrumb";
-import { IconSlash } from "@tabler/icons-react";
+import Link from "next/link";
 
 export default function BreadcrumbPageClient() {
   const pathName = usePathname();
   return (
     <BreadcrumbPage className="flex items-center">
       {pathName.startsWith("/dashboard") && (
-        <BreadcrumbComponent path="Dashboard" />
+        <BreadcrumbComponent path="dashboard" label="Dashboard" />
       )}
       {pathName === "/dashboard/create" && (
-        <BreadcrumbComponent path="Create" />
+        <BreadcrumbComponent path="create" label="Create" />
       )}
       {pathName === "/dashboard/profile" && (
-        <BreadcrumbComponent path="Profile" />
+        <BreadcrumbComponent path="profile" label="Profile" />
       )}
       {pathName === "/dashboard/customer-portal" && (
-        <BreadcrumbComponent path="Customer Portal" />
+        <BreadcrumbComponent path="customer-portal" label="Customer Portal" />
       )}
     </BreadcrumbPage>
   );
 }
 
-export function BreadcrumbComponent({ path }: { path: string }) {
+export function BreadcrumbComponent({
+  path,
+  label,
+}: {
+  path: string;
+  label: string;
+}) {
   return (
-    <span className="flex items-center">
-      <IconSlash />
-      {path}
-    </span>
+    <Link
+      href={path === "dashboard" ? "/dashboard" : `/dashboard/${path}`}
+      className="flex items-center"
+    >
+      <span className="mx-1 text-xl"> / </span>
+      {label}
+    </Link>
   );
 }

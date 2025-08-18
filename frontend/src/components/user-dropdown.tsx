@@ -96,7 +96,7 @@ export function UserDropdown() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout}>
+        <DropdownMenuItem onClick={handleLogout} className="w-full">
           <LogOutIcon className="size-4 opacity-60" aria-hidden="true" />
           Logout
         </DropdownMenuItem>

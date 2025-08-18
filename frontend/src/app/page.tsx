@@ -48,10 +48,21 @@ export default function HomePage() {
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             {session ? (
-              <CreateSong size="lg" className="px-8 py-6 text-xl">
-                Start Creating Music
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </CreateSong>
+              <>
+                <CreateSong size="lg" className="px-8 py-6 text-xl">
+                  Start Creating Music
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </CreateSong>
+                <Link
+                  href="/dashboard/create"
+                  className={buttonVariants({
+                    size: "lg",
+                    className: "px-8 py-6 text-xl",
+                  })}
+                >
+                  Create Song Page
+                </Link>
+              </>
             ) : (
               <Link
                 href="/auth/sign-up"
@@ -179,7 +190,11 @@ export default function HomePage() {
           </p>
 
           {session ? (
-            <CreateSong size="lg" className="px-8 py-6 text-xl">
+            <CreateSong
+              size="lg"
+              variant="default"
+              className="px-8 py-6 text-xl"
+            >
               Start Creating Music
               <ArrowRight className="ml-2 h-5 w-5" />
             </CreateSong>

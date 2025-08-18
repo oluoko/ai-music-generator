@@ -1,4 +1,5 @@
 "use client";
+
 import { type Icon } from "@tabler/icons-react";
 import { IconDashboard, IconMusic } from "@tabler/icons-react";
 import {
@@ -11,6 +12,7 @@ import {
 import CreateSong from "../create";
 import { PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navMainItems = [
   {
@@ -26,6 +28,8 @@ const navMainItems = [
 ];
 
 export function NavMain() {
+  const pathname = usePathname();
+  const isActive = (url: string) => pathname === url;
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -40,7 +44,11 @@ export function NavMain() {
         <SidebarMenu>
           {navMainItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title}>
+              <SidebarMenuButton
+                asChild
+                tooltip={item.title}
+                className={`${isActive(item.url) && "bg-primary text-primary-foreground"}`}
+              >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>
