@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
 import { type Icon } from "@tabler/icons-react";
+import { IconLogout, IconSettings, IconUserCircle } from "@tabler/icons-react";
 
 import {
   SidebarGroup,
@@ -11,32 +11,45 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { ThemeToggle } from "@/components/theme-toggle";
+import Link from "next/link";
+import type { ComponentPropsWithoutRef } from "react";
+
+const navSecondaryItems = [
+  {
+    title: "Settings",
+    url: "/dashboard/settings",
+    icon: IconSettings,
+  },
+  {
+    title: "Profile",
+    url: "/dashboard/profile",
+    icon: IconUserCircle,
+  },
+  {
+    title: "Exit Dashboard",
+    url: "/",
+    icon: IconLogout,
+  },
+];
 
 export function NavSecondary({
-  items,
   ...props
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon: Icon;
-  }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => (
+          {navSecondaryItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild>
-                <a href={item.url}>
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          <SidebarMenuItem>
+          <SidebarMenuItem className="ml-2">
             <ThemeToggle />
           </SidebarMenuItem>
         </SidebarMenu>

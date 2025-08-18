@@ -1,7 +1,6 @@
 "use client";
-
 import { type Icon } from "@tabler/icons-react";
-
+import { IconDashboard, IconMusic } from "@tabler/icons-react";
 import {
   SidebarGroup,
   SidebarGroupContent,
@@ -11,16 +10,22 @@ import {
 } from "@/components/ui/sidebar";
 import CreateSong from "../create";
 import { PlusCircleIcon } from "lucide-react";
+import Link from "next/link";
 
-export function NavMain({
-  items,
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: Icon;
-  }[];
-}) {
+const navMainItems = [
+  {
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: IconDashboard,
+  },
+  {
+    title: "Create",
+    url: "/dashboard/create",
+    icon: IconMusic,
+  },
+];
+
+export function NavMain() {
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">
@@ -33,11 +38,13 @@ export function NavMain({
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarMenu>
-          {items.map((item) => (
+          {navMainItems.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
+              <SidebarMenuButton asChild tooltip={item.title}>
+                <Link href={item.url}>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

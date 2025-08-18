@@ -5,7 +5,6 @@ import {
   IconDotsVertical,
   IconHome,
   IconLogout,
-  IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react";
 
@@ -27,18 +26,25 @@ import {
 } from "@/components/ui/sidebar";
 import { useSignOut } from "@/hooks/use-signout";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { redirect } from "next/navigation";
+import { defaultProfileImage, getNameFromEmail } from "@/lib/utils";
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar();
   const handleLogout = useSignOut();
+
+  const { data: session, isPending } = authClient.useSession();
+
+  if (isPending) return null;
+  if (!session) return redirect("/login");
+
+  const user = {
+    name: session.user.name ?? getNameFromEmail(session.user.email),
+    email: session.user.email,
+    avatar:
+      session.user.image ?? defaultProfileImage({ email: session.user.email }),
+  };
 
   return (
     <SidebarMenu>
@@ -90,17 +96,17 @@ export function NavUser({
                   Home
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconUserCircle />
-                Account
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/profile">
+                  <IconUserCircle />
+                  Profile
+                </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconCreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IconNotification />
-                Notifications
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/customer-portal">
+                  <IconCreditCard />
+                  Customer Portal
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
