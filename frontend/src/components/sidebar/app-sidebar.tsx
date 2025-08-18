@@ -26,6 +26,7 @@ import Logo from "@/components/logo";
 import { authClient } from "@/lib/auth-client";
 import { defaultProfileImage, getNameFromEmail } from "@/lib/utils";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const data = {
   navMain: [
@@ -75,7 +76,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Logo size="sm" />
+              <Link href="/dashboard">
+                <Logo size="sm" />
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
