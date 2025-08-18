@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import HomeNav from "@/components/home-nav";
+import CreateSong from "@/components/create";
 
 export default function HomePage() {
   const { data: session } = authClient.useSession();
@@ -47,16 +48,10 @@ export default function HomePage() {
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
             {session ? (
-              <Link
-                href="/create"
-                className={buttonVariants({
-                  size: "lg",
-                  className: "px-8 py-6 text-xl",
-                })}
-              >
+              <CreateSong size="lg" className="px-8 py-6 text-xl">
                 Start Creating Music
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              </CreateSong>
             ) : (
               <Link
                 href="/auth/sign-up"
@@ -184,18 +179,10 @@ export default function HomePage() {
           </p>
 
           {session ? (
-            <>
-              <Link
-                href="/create"
-                className={buttonVariants({
-                  size: "lg",
-                  className: "px-8 py-6 text-xl",
-                })}
-              >
-                Start Creating Music
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </>
+            <CreateSong size="lg" className="px-8 py-6 text-xl">
+              Start Creating Music
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </CreateSong>
           ) : (
             <Link
               href="/auth/sign-up"

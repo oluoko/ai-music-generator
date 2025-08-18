@@ -37,7 +37,6 @@ export default function HomeNav() {
             >
               Get Started
             </Link>
-            <ThemeToggle />
           </>
         )}
         <ThemeToggle />

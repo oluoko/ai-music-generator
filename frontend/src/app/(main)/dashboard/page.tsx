@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Meta } from "@/components/meta";
+import CreateSong from "@/components/create";
 
 export const generateMetadata = () => {
   return Meta({
@@ -17,5 +18,10 @@ export default async function Dashboard() {
 
   if (!session) redirect("/auth/sign-in");
 
-  return <div>Dashboard</div>;
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center">
+      Dashboard
+      <CreateSong />
+    </div>
+  );
 }
