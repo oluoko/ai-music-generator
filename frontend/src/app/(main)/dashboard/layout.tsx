@@ -6,6 +6,7 @@ import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { SiteHeader } from "@/components/sidebar/site-header";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import type { ReactNode } from "react";
+import SoundBar from "@/components/sound-bar";
 
 export default async function DashboardLayout({
   children,
@@ -31,6 +32,7 @@ export default async function DashboardLayout({
       <SidebarInset>
         <SiteHeader />
         <div className="@container/main h-full w-full">{children}</div>
+        <SoundBar />
       </SidebarInset>
     </SidebarProvider>
   );

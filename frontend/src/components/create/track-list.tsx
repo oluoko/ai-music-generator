@@ -27,6 +27,7 @@ import { renameSong, setPusblishedStatus } from "@/actions/song";
 import { toast } from "sonner";
 import { RenameDialog } from "@/components/create/rename-dialog";
 import { useRouter } from "next/navigation";
+import { usePlayerStore } from "@/stores/use-player-store";
 
 export interface Track {
   id: string;
@@ -49,6 +50,7 @@ export default function TrackList({ tracks }: { tracks: Track[] }) {
   const [loadingTrackId, setLoadingTrackId] = useState<string | null>(null);
   const [trackToRename, setTrackToRename] = useState<Track | null>(null);
   const router = useRouter();
+  const setTrack = usePlayerStore((state) => state.setTrack);
 
   const filteredTracks = tracks.filter(
     (track) =>
@@ -64,9 +66,15 @@ export default function TrackList({ tracks }: { tracks: Track[] }) {
     setLoadingTrackId(null);
     console.log(playUrl);
 
-    // Play the song in the playbar
+    setTrack({
+      id: track.id,
+      title: track.title,
+      artwork: track.thumbnailUrl,
+      url: playUrl,
+      prompt: track.prompt,
+      createdByUsername: track.createdByUserName,
+    });
   };
-
   const handleRefresh = async () => {
     setIsRefreshing(true);
     router.refresh();
