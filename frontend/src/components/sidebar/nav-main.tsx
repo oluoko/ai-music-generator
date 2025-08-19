@@ -1,6 +1,5 @@
 "use client";
 
-import { type Icon } from "@tabler/icons-react";
 import { IconDashboard, IconMusic } from "@tabler/icons-react";
 import {
   SidebarGroup,
@@ -9,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import CreateSong from "../create";
+import CreateSong from "@/components/create";
 import { PlusCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";

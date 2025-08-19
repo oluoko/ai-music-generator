@@ -34,7 +34,7 @@ const styleTags = [
 export default function SongPanel() {
   const [mode, setMode] = useState<"simple" | "custom">("simple");
   const [description, setDescription] = useState("");
-  const [instrumental, setInstrumental] = useState(false);
+  const [instrumental, setInstrumental] = useState(true);
   const [lyricsMode, setLyricsMode] = useState<"write" | "auto">("write");
   const [lyrics, setLyrics] = useState("");
   const [styleInput, setStyleInput] = useState("");
@@ -113,6 +113,9 @@ export default function SongPanel() {
           fullDescribedSong: currentPlaceholder,
           instrumental,
         };
+        toast.success(
+          `This "${currentPlaceholder}" will be used to generate a song.`,
+        );
       } else {
         requestBody = {
           fullDescribedSong: description,

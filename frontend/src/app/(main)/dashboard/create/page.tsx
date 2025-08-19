@@ -4,6 +4,7 @@ import SongPanel from "@/components/create/song-panel";
 import { Suspense } from "react";
 import TrackListFetcher from "@/components/create/track-list-fetcher";
 import { Loader2 } from "lucide-react";
+import LoadingDots from "@/components/loading-dots";
 
 export const generateMetadata = () => {
   return Meta({
@@ -19,7 +20,8 @@ export default function CreatePage() {
       <Suspense
         fallback={
           <div className="flex size-full items-center justify-center">
-            <Loader2 className="size-8 animate-spin" /> Loading...
+            <Loader2 className="mr-2 size-8 animate-spin" />
+            <LoadingDots text="Loading" />
           </div>
         }
       >

@@ -5,6 +5,18 @@
 import "./src/env.js";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  images: {
+    dangerouslyAllowSVG: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname:
+          "oluoko-s-ai-music-generator-bucket.s3.us-east-1.amazonaws.com",
+        port: "",
+      },
+    ],
+  },
+};
 
 export default config;

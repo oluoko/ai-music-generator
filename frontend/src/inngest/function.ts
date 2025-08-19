@@ -1,5 +1,5 @@
 import { db } from "@/server/db";
-import { inngest } from "./client";
+import { inngest } from "@/inngest/client";
 import { env } from "@/env";
 
 export const generateSong = inngest.createFunction(
