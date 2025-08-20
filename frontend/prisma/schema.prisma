@@ -23,7 +23,7 @@ model User {
 
   songs   Song[]
   likes   Like[]
-  credits Int    @default(99)
+  credits Int    @default(150)
 
   @@unique([email])
   @@map("user")

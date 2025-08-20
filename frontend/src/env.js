@@ -12,7 +12,6 @@ export const env = createEnv({
       .enum(["development", "test", "production"])
       .default("development"),
     BETTER_AUTH_SECRET: z.string(),
-    BETTER_AUTH_URL: z.string().url(),
     MODAL_KEY: z.string(),
     MODAL_SECRET: z.string(),
     AWS_ACCESS_KEY_ID: z.string(),
@@ -25,6 +24,9 @@ export const env = createEnv({
     GENERATE_WITH_LYRICS: z.string(),
     POLAR_ACCESS_TOKEN: z.string(),
     POLAR_WEBHOOK_SECRET: z.string(),
+    LARGE_PACK_ID: z.string(),
+    MEDIUM_PACK_ID: z.string(),
+    SMALL_PACK_ID: z.string(),
   },
 
   /**
@@ -44,7 +46,6 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     BETTER_AUTH_SECRET: process.env.BETTER_AUTH_SECRET,
-    BETTER_AUTH_URL: process.env.BETTER_AUTH_URL,
     MODAL_KEY: process.env.MODAL_KEY,
     MODAL_SECRET: process.env.MODAL_SECRET,
     AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
@@ -57,6 +58,9 @@ export const env = createEnv({
     GENERATE_WITH_LYRICS: process.env.GENERATE_WITH_LYRICS,
     POLAR_ACCESS_TOKEN: process.env.POLAR_ACCESS_TOKEN,
     POLAR_WEBHOOK_SECRET: process.env.POLAR_WEBHOOK_SECRET,
+    LARGE_PACK_ID: process.env.LARGE_PACK_ID,
+    MEDIUM_PACK_ID: process.env.MEDIUM_PACK_ID,
+    SMALL_PACK_ID: process.env.SMALL_PACK_ID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

@@ -56,14 +56,14 @@ export const auth = betterAuth({
             let creditsToAdd = 0;
 
             switch (productId) {
-              case "c37323eb-9d27-4851-aefc-801936feec3e":
+              case env.SMALL_PACK_ID:
                 creditsToAdd = 100;
                 break;
-              case "c6d7906e-95eb-44f1-a3bd-3eaa4df381d7":
-                creditsToAdd = 300;
+              case env.MEDIUM_PACK_ID:
+                creditsToAdd = 250;
                 break;
-              case "101652b9-9daa-4288-ad2d-76f23125adc5":
-                creditsToAdd = 500;
+              case env.LARGE_PACK_ID:
+                creditsToAdd = 600;
                 break;
               default:
                 console.error("Unknown product ID");
