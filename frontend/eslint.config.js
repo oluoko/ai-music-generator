@@ -19,6 +19,8 @@ export default tseslint.config(
     ],
     rules: {
       "@typescript-eslint/array-type": "off",
+      "@next/next/no-img-element": "off",
+      "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",
       "@typescript-eslint/no-unsafe-call": "off",

@@ -6,11 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-interface ModeToggleProps {
-  className?: string;
-}
-
-export function ThemeToggle({ className }: ModeToggleProps) {
+export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 

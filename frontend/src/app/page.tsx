@@ -190,11 +190,7 @@ export default function HomePage() {
           </p>
 
           {session ? (
-            <CreateSong
-              size="lg"
-              variant="default"
-              className="px-8 py-6 text-xl"
-            >
+            <CreateSong size="lg" className="px-8 py-6 text-xl">
               Start Creating Music
               <ArrowRight className="ml-2 h-5 w-5" />
             </CreateSong>

@@ -57,3 +57,21 @@ export function getNameFromEmail(email: string): string {
   const [name] = email.split("@");
   return (name ?? "").replace(".", " ");
 }
+
+/**
+ * Array of placeholder descriptions for song generation.
+ */
+export const placeholders = [
+  "A dreamy lofi hip-hop song, perfect for studying, sleeping or just relaxing",
+  "An upbeat pop anthem with catchy hooks and energetic drums",
+  "A soulful R&B ballad with smooth vocals and emotional lyrics",
+  "An epic orchestral piece with soaring strings and dramatic crescendos",
+  "A funky jazz fusion track with complex rhythms and improvised solos",
+  "An ambient electronic soundscape with ethereal pads and subtle beats",
+  "A country folk song with acoustic guitar, harmonica, and storytelling vocals",
+  "A heavy metal track with distorted guitars, pounding drums, and powerful vocals",
+  "A classical piano composition with delicate melodies and expressive dynamics",
+  "A reggae song with laid-back rhythms, bass lines, and positive vibes",
+  "An indie rock track with jangly guitars, driving bass, and introspective lyrics",
+  "A trap hip-hop beat with 808s, hi-hats, and atmospheric synths",
+];
