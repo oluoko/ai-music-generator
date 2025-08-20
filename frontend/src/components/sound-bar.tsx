@@ -7,6 +7,7 @@ import {
   Pause,
   Play,
   Volume2,
+  XIcon,
 } from "lucide-react";
 import { usePlayerStore } from "@/stores/use-player-store";
 import { Card } from "@/components/ui/card";
@@ -22,6 +23,7 @@ import {
 
 export default function SoundBar() {
   const { track } = usePlayerStore();
+  const setTrack = usePlayerStore((state) => state.setTrack);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState([77]);
   const [currentTime, setCurrentTime] = useState(0);
@@ -112,8 +114,8 @@ export default function SoundBar() {
   if (!track) return null;
 
   return (
-    <div className="px-4 pb-2">
-      <Card className="bg-background/60 relative w-full shrink-0 border-t py-0 backdrop-blur">
+    <div className="fixed right-4 bottom-2 left-4 z-20">
+      <Card className="bg-background/90 relative w-full shrink-0 border-t py-0 backdrop-blur">
         <div className="space-y-2 p-3">
           <div className="flex items-center justify-between">
             <div className="flex min-w-0 flex-1 items-center gap-2">
@@ -174,8 +176,11 @@ export default function SoundBar() {
                       window.open(track?.url, "_blank");
                     }}
                   >
-                    <Download className="mr-2 h-4 w-4" />
+                    <Download className="mr-2 size-4" />
                     Download
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTrack(null)}>
+                    <XIcon className="mr-2 size-4" /> Close Player
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

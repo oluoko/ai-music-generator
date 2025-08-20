@@ -78,7 +78,6 @@ export async function getPlayUrl(songId: string) {
   const song = await db.song.findUnique({
     where: {
       id: songId,
-      published: true,
       s3Key: {
         not: null,
       },

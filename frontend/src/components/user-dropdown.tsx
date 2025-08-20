@@ -83,15 +83,15 @@ export function UserDropdown() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link href="/profile">
+            <Link href="/account/settings">
               <UserIcon className="size-4 opacity-60" aria-hidden="true" />
-              Profile
+              Account
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/settings">
+            <Link href="/account/security">
               <SettingsIcon className="size-4 opacity-60" aria-hidden="true" />
-              Settings
+              Security
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

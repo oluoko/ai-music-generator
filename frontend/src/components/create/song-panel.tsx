@@ -34,7 +34,7 @@ const styleTags = [
 export default function SongPanel() {
   const [mode, setMode] = useState<"simple" | "custom">("simple");
   const [description, setDescription] = useState("");
-  const [instrumental, setInstrumental] = useState(true);
+  const [instrumental, setInstrumental] = useState(false);
   const [lyricsMode, setLyricsMode] = useState<"write" | "auto">("write");
   const [lyrics, setLyrics] = useState("");
   const [styleInput, setStyleInput] = useState("");

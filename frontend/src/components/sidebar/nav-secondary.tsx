@@ -15,14 +15,14 @@ import { usePathname } from "next/navigation";
 
 const navSecondaryItems = [
   {
-    title: "Settings",
-    url: "/dashboard/settings",
-    icon: IconSettings,
+    title: "Account",
+    url: "/account/settings",
+    icon: IconUserCircle,
   },
   {
-    title: "Profile",
-    url: "/dashboard/profile",
-    icon: IconUserCircle,
+    title: "Security",
+    url: "/account/security",
+    icon: IconSettings,
   },
   {
     title: "Exit Dashboard",

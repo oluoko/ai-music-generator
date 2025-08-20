@@ -31,7 +31,7 @@ export default async function DashboardLayout({
       <AppSidebar variant="inset" />
       <SidebarInset>
         <SiteHeader />
-        <div className="@container/main h-full w-full">{children}</div>
+        <div className="@container/main relative h-full w-full">{children}</div>
         <SoundBar />
       </SidebarInset>
     </SidebarProvider>

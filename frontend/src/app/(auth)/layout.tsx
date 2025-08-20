@@ -1,22 +1,12 @@
 import Logo from "@/components/logo";
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { buttonVariants } from "@/components/ui/button";
+import BackButton from "@/components/back-button";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center">
-      <Link
-        href="/"
-        className={buttonVariants({
-          variant: "outline",
-          className: "absolute top-4 left-4",
-        })}
-      >
-        <ArrowLeft />
-        Back
-      </Link>
+      <BackButton />
       <div className="flex w-full max-w-sm flex-col gap-6">
         <Link className="flex items-center self-center" href="/">
           <Logo size="sm" />

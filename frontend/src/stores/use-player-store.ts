@@ -11,7 +11,7 @@ interface PlayerTrack {
 
 interface PlayerState {
   track: PlayerTrack | null;
-  setTrack: (track: PlayerTrack) => void;
+  setTrack: (track: PlayerTrack | null) => void;
 }
 
 export const usePlayerStore = create<PlayerState>((set) => ({

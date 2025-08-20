@@ -1,6 +1,6 @@
 "use client";
 
-import { queueSong } from "@/actions/generation";
+import { generateSong } from "@/actions/generation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
@@ -31,7 +31,7 @@ export default function CreateSong({
       size={size}
       variant={variant}
       className={cn("text-foreground bg-transparent", className)}
-      onClick={queueSong}
+      onClick={() => generateSong({})}
     >
       {children ?? "Generate a Song"}
     </Button>
