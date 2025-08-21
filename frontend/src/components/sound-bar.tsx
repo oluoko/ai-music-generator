@@ -7,6 +7,7 @@ import {
   Pause,
   Play,
   Volume2,
+  VolumeOff,
   XIcon,
 } from "lucide-react";
 import { usePlayerStore } from "@/stores/use-player-store";
@@ -152,7 +153,17 @@ export default function SoundBar() {
             {/* Additional controls */}
             <div className="flex items-center gap-1">
               <div className="flex items-center gap-2">
-                <Volume2 className="h-4 w-4" />
+                {volume[0] === 0 ? (
+                  <VolumeOff
+                    className="size-4 cursor-pointer"
+                    onClick={() => setVolume([60])}
+                  />
+                ) : (
+                  <Volume2
+                    className="size-4 cursor-pointer"
+                    onClick={() => setVolume([0])}
+                  />
+                )}
                 <Slider
                   value={volume}
                   onValueChange={setVolume}

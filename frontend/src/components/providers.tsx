@@ -14,7 +14,7 @@ import { Toaster } from "@/components/ui/sonner";
 import NextTopLoader from "nextjs-toploader";
 import { useTheme } from "next-themes";
 import { authClient } from "@/lib/auth-client";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "next-themes";
 
 const ToasterWithInverseTheme = () => {
   const { resolvedTheme } = useTheme();
