@@ -37,6 +37,9 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_LARGE_PACK_ID: z.string(),
+    NEXT_PUBLIC_MEDIUM_PACK_ID: z.string(),
+    NEXT_PUBLIC_SMALL_PACK_ID: z.string(),
   },
 
   /**
@@ -63,6 +66,9 @@ export const env = createEnv({
     LARGE_PACK_ID: process.env.LARGE_PACK_ID,
     MEDIUM_PACK_ID: process.env.MEDIUM_PACK_ID,
     SMALL_PACK_ID: process.env.SMALL_PACK_ID,
+    NEXT_PUBLIC_LARGE_PACK_ID: process.env.NEXT_PUBLIC_LARGE_PACK_ID,
+    NEXT_PUBLIC_MEDIUM_PACK_ID: process.env.NEXT_PUBLIC_MEDIUM_PACK_ID,
+    NEXT_PUBLIC_SMALL_PACK_ID: process.env.NEXT_PUBLIC_SMALL_PACK_ID,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

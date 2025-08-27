@@ -7,7 +7,11 @@ import { env } from "@/env";
 export default function Upgrade() {
   const upgrade = async () => {
     await authClient.checkout({
-      products: [env.LARGE_PACK_ID, env.MEDIUM_PACK_ID, env.SMALL_PACK_ID],
+      products: [
+        env.NEXT_PUBLIC_LARGE_PACK_ID,
+        env.NEXT_PUBLIC_MEDIUM_PACK_ID,
+        env.NEXT_PUBLIC_SMALL_PACK_ID,
+      ],
     });
   };
   return (
