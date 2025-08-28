@@ -28,7 +28,6 @@ import { toast } from "sonner";
 import { RenameDialog } from "@/components/create/rename-dialog";
 import { useRouter } from "next/navigation";
 import { usePlayerStore } from "@/stores/use-player-store";
-import { cn } from "@/lib/utils";
 
 export interface Track {
   id: string;
