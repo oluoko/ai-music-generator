@@ -38,7 +38,7 @@ Follow these steps to install and set up the project.
 ### Clone the Repository
 
 ```bash
-git clone --recurse-submodules https://github.com/Andreaswt/ai-music-generation-saas.git
+git clone --recurse-submodules https://github.com/oluoko/ai-music-generator.git
 ```
 
 ### Install Python
@@ -119,13 +119,13 @@ Policy for frontend user:
                 "s3:PutObject",
                 "s3:GetObject"
             ],
-            "Resource": "arn:aws:s3:::music-generation-bucket/*"
+            "Resource": "<your_s3_bucket_arn>/*"
         },
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::music-generation-bucket"
+            "Resource": "<your_s3_bucket_arn>"
         }
     ]
 }
@@ -141,13 +141,13 @@ Policy for backend user:
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::music-generation-bucket/*"
+            "Resource": "<your_s3_bucket_arn>/*"
         },
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-            "Resource": "arn:aws:s3:::music-generation-bucket"
+            "Resource": "<your_s3_bucket_arn>"
         }
     ]
 }
