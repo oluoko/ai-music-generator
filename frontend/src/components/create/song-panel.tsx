@@ -9,6 +9,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { generateSong, type GenerateRequest } from "@/actions/generation";
+import { cn } from "@/lib/utils";
 
 const inspirationTags = [
   "80s synth-pop",
@@ -31,7 +32,7 @@ const styleTags = [
   "Reggae rhythms",
 ];
 
-export default function SongPanel() {
+export default function SongPanel({ isDialog }: { isDialog?: boolean }) {
   const [mode, setMode] = useState<"simple" | "custom">("simple");
   const [description, setDescription] = useState("");
   const [instrumental, setInstrumental] = useState(false);
@@ -153,7 +154,12 @@ export default function SongPanel() {
   };
 
   return (
-    <div className="bg-muted/30 flex w-full flex-col border-r lg:w-80">
+    <div
+      className={cn(
+        "flex max-w-full flex-col",
+        !isDialog && "bg-muted/30 w-full border-r lg:w-80",
+      )}
+    >
       <div className="flex-1 overflow-y-auto p-4">
         <Tabs
           value={mode}

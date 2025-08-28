@@ -28,6 +28,7 @@ import { toast } from "sonner";
 import { RenameDialog } from "@/components/create/rename-dialog";
 import { useRouter } from "next/navigation";
 import { usePlayerStore } from "@/stores/use-player-store";
+import { cn } from "@/lib/utils";
 
 export interface Track {
   id: string;
@@ -44,7 +45,13 @@ export interface Track {
   published: boolean;
 }
 
-export default function TrackList({ tracks }: { tracks: Track[] }) {
+export default function TrackList({
+  tracks,
+  isExamples,
+}: {
+  tracks: Track[];
+  isExamples?: boolean;
+}) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [loadingTrackId, setLoadingTrackId] = useState<string | null>(null);
@@ -84,36 +91,38 @@ export default function TrackList({ tracks }: { tracks: Track[] }) {
 
   return (
     <div className="flex flex-1 flex-col overflow-y-scroll">
-      <div className="flex-1 p-6">
-        <div className="mb-4 flex items-center justify-between gap-4">
-          <div className="relative max-w-md flex-1">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-            <Input
-              placeholder="Search..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+      <div className={cn("flex-1", isExamples ? "p-2" : "p-6")}>
+        {!isExamples && (
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="relative max-w-md flex-1">
+              <Search className="text-muted-foreground absolute top-1/2 left-3 size-4 -translate-y-1/2" />
+              <Input
+                placeholder="Search..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <Button
+              disabled={isRefreshing}
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+            >
+              {isRefreshing ? (
+                <>
+                  <Loader2 className="mr-2 animate-spin" />
+                  <LoadingDots text="Refreshing" />
+                </>
+              ) : (
+                <>
+                  <RefreshCcw className="mr-2" />
+                  Refresh
+                </>
+              )}
+            </Button>
           </div>
-          <Button
-            disabled={isRefreshing}
-            variant="outline"
-            size="sm"
-            onClick={handleRefresh}
-          >
-            {isRefreshing ? (
-              <>
-                <Loader2 className="mr-2 animate-spin" />
-                <LoadingDots text="Refreshing" />
-              </>
-            ) : (
-              <>
-                <RefreshCcw className="mr-2" />
-                Refresh
-              </>
-            )}
-          </Button>
-        </div>
+        )}
 
         {/* Track List */}
 
@@ -232,20 +241,22 @@ export default function TrackList({ tracks }: { tracks: Track[] }) {
 
                       {/* Actions */}
                       <div className="flex items-center gap-2">
-                        <Button
-                          onClick={async (e) => {
-                            e.stopPropagation();
-                            await setPusblishedStatus(
-                              track.id,
-                              !track.published,
-                            );
-                          }}
-                          variant="outline"
-                          size="sm"
-                          className={`cursor-pointer ${track.published ? "border-red-200" : ""}`}
-                        >
-                          {track.published ? "Unpublish" : "Publish"}
-                        </Button>
+                        {!isExamples && (
+                          <Button
+                            onClick={async (e) => {
+                              e.stopPropagation();
+                              await setPusblishedStatus(
+                                track.id,
+                                !track.published,
+                              );
+                            }}
+                            variant="outline"
+                            size="sm"
+                            className={`cursor-pointer ${track.published ? "border-red-200" : ""}`}
+                          >
+                            {track.published ? "Unpublish" : "Publish"}
+                          </Button>
+                        )}
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon">
@@ -269,14 +280,16 @@ export default function TrackList({ tracks }: { tracks: Track[] }) {
                             >
                               <Download className="mr-2" /> Download
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={async (e) => {
-                                e.stopPropagation();
-                                setTrackToRename(track);
-                              }}
-                            >
-                              <Pencil className="mr-2" /> Rename
-                            </DropdownMenuItem>
+                            {!isExamples && (
+                              <DropdownMenuItem
+                                onClick={async (e) => {
+                                  e.stopPropagation();
+                                  setTrackToRename(track);
+                                }}
+                              >
+                                <Pencil className="mr-2" /> Rename
+                              </DropdownMenuItem>
+                            )}
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>

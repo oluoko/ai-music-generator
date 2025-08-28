@@ -1,5 +1,3 @@
-"use client";
-
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -12,12 +10,63 @@ import {
   Guitar,
 } from "lucide-react";
 import Link from "next/link";
-import { authClient } from "@/lib/auth-client";
 import HomeNav from "@/components/home-nav";
 import CreateSong from "@/components/create";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { db } from "@/server/db";
+import { getPresignedUrl } from "@/actions/generation";
+import TrackList from "@/components/create/track-list";
 
-export default function HomePage() {
-  const { data: session } = authClient.useSession();
+export default async function HomePage() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const songs = await db.song.findMany({
+    where: {
+      published: true,
+    },
+    include: {
+      user: {
+        select: { name: true },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    take: 5,
+  });
+
+  const songsWithThumbnails = await Promise.all(
+    songs.map(async (song) => {
+      const thumbnailUrl = song.thumbnailS3Key
+        ? await getPresignedUrl(song.thumbnailS3Key)
+        : null;
+
+      return {
+        id: song.id,
+        title: song.title,
+        instrumental: song.instrumental,
+        prompt: song.prompt,
+        lyrics: song.lyrics,
+        describedLyrics: song.describedLyrics,
+        fullDescribedSong: song.fullDescribedSong,
+        thumbnailUrl,
+        playUrl: null,
+        status: song.status,
+        createdByUserName: song.user?.name,
+        published: song.published,
+      };
+    }),
+  );
 
   return (
     <div className="min-h-screen">
@@ -75,10 +124,30 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             )}{" "}
-            <Button variant="outline" size="lg" className="px-8 py-6 text-xl">
-              <Play className="mr-2 h-5 w-5" />
-              Listen to Examples
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 py-6 text-xl"
+                >
+                  <Play className="mr-2 h-5 w-5" />
+                  Listen to Examples
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="bg-background/70 flex w-[90vw] flex-col items-center justify-center backdrop-blur-lg md:w-[70vw]">
+                <DialogHeader>
+                  <DialogTitle className="text-lg font-semibold">
+                    Listen to Examples
+                  </DialogTitle>
+                </DialogHeader>
+                {songsWithThumbnails.length > 0 ? (
+                  <TrackList tracks={songsWithThumbnails} isExamples />
+                ) : (
+                  <p>No examples available</p>
+                )}
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
       </section>

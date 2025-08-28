@@ -15,6 +15,7 @@ import NextTopLoader from "nextjs-toploader";
 import { useTheme } from "next-themes";
 import { authClient } from "@/lib/auth-client";
 import { ThemeProvider } from "next-themes";
+import SoundBar from "@/components/sound-bar";
 
 const ToasterWithInverseTheme = () => {
   const { resolvedTheme } = useTheme();
@@ -73,6 +74,7 @@ export function Providers({ children }: { children: ReactNode }) {
       >
         <TopLoaderWithTheme />
         {children}
+        <SoundBar />
         <ToasterWithInverseTheme />
       </AuthUIProvider>
     </ThemeProvider>

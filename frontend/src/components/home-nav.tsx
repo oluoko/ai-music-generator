@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { authClient } from "@/lib/auth-client";

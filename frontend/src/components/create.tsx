@@ -1,12 +1,16 @@
 "use client";
 
-import { generateSong } from "@/actions/generation";
 import { Button } from "@/components/ui/button";
-import { cn, placeholders } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
-import { useEffect, useState, useTransition, type ReactNode } from "react";
-import { toast } from "sonner";
-import LoadingDots from "./loading-dots";
+import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import type { ReactNode } from "react";
+import SongPanel from "@/components/create/song-panel";
 
 interface CreateSongProps {
   size?: "default" | "sm" | "lg" | "icon";
@@ -29,55 +33,24 @@ export default function CreateSong({
   className,
   children,
 }: CreateSongProps) {
-  const [loading, startGenerating] = useTransition();
-  const [currentPlaceholderIndex, setCurrentPlaceholderIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentPlaceholderIndex(
-        (prevIndex) => (prevIndex + 1) % placeholders.length,
-      );
-    }, 7000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const currentPlaceholder = placeholders[currentPlaceholderIndex];
-
-  const handleGenerateSong = async () => {
-    const requestBody = {
-      fullDescribedSong: currentPlaceholder,
-      instrumental: false,
-    };
-    toast.success(
-      `This "${currentPlaceholder}" will be used to generate a song.`,
-    );
-
-    startGenerating(async () => {
-      try {
-        await generateSong(requestBody);
-      } catch (error) {
-        console.error("Error generating song:", error);
-        toast.error("Failed to generate song");
-      }
-    });
-  };
   return (
-    <Button
-      size={size}
-      variant={variant}
-      className={cn("text-foreground bg-transparent", className)}
-      onClick={handleGenerateSong}
-      disabled={loading}
-    >
-      {loading ? (
-        <>
-          <Loader2 className="mr-2 size-4 animate-spin" />
-          <LoadingDots text="Generating" className="text-muted-foreground" />
-        </>
-      ) : (
-        (children ?? "Generate a Song")
-      )}
-    </Button>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button
+          size={size}
+          variant={variant}
+          className={cn("text-foreground bg-transparent", className)}
+        >
+          {children ?? "Generate a Song"}
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="bg-background/70 flex w-[90vw] flex-col items-center justify-center backdrop-blur-lg md:w-[70vw]">
+        <DialogHeader>
+          <DialogTitle>Generate a Song</DialogTitle>
+        </DialogHeader>
+        <SongPanel isDialog={true} />
+      </DialogContent>
+    </Dialog>
   );
 }
