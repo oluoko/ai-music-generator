@@ -34,6 +34,7 @@ export default function SongCard({ song }: { song: SongWithRelation }) {
       url: playUrl,
       artwork: song.thumbnailUrl,
       prompt: song.prompt,
+      published: song.published,
       createdByUsername: song.user.name ?? "Unknown",
     });
   };

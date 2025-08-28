@@ -21,6 +21,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { getPlayUrl } from "@/actions/generation";
 
 export default function SoundBar() {
   const { track } = usePlayerStore();
@@ -181,10 +183,17 @@ export default function SoundBar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-40">
                   <DropdownMenuItem
-                    onClick={() => {
-                      if (!track?.url) return;
-
-                      window.open(track?.url, "_blank");
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      if (!track.published) {
+                        toast.error(
+                          "Please publish the track before downloading",
+                        );
+                      } else {
+                        const playUrl = await getPlayUrl(track.id);
+                        toast.success("Track downloading...");
+                        window.open(playUrl, "_blank");
+                      }
                     }}
                   >
                     <Download className="mr-2 size-4" />

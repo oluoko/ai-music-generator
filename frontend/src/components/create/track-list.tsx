@@ -72,6 +72,7 @@ export default function TrackList({ tracks }: { tracks: Track[] }) {
       artwork: track.thumbnailUrl,
       url: playUrl,
       prompt: track.prompt,
+      published: track.published,
       createdByUsername: track.createdByUserName,
     });
   };

@@ -6,6 +6,7 @@ interface PlayerTrack {
   url: string | null;
   artwork: string | null;
   prompt: string | null;
+  published: boolean | null;
   createdByUsername: string | null;
 }
 
