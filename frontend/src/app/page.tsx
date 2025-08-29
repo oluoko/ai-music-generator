@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -14,59 +16,40 @@ import HomeNav from "@/components/home-nav";
 import CreateSong from "@/components/create";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { db } from "@/server/db";
-import { getPresignedUrl } from "@/actions/generation";
 import TrackList from "@/components/create/track-list";
+import { useEffect, useRef, useState, type ElementRef } from "react";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
 
-export default async function HomePage() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export default function HomePage() {
+  const { data: session } = authClient.useSession();
+  const closeExamplesDialogRef = useRef<ElementRef<"button">>(null);
 
-  const songs = await db.song.findMany({
-    where: {
-      published: true,
-    },
-    include: {
-      user: {
-        select: { name: true },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 5,
-  });
+  const [songsWithThumbnails, setSongsWithThumbnails] = useState([]);
 
-  const songsWithThumbnails = await Promise.all(
-    songs.map(async (song) => {
-      const thumbnailUrl = song.thumbnailS3Key
-        ? await getPresignedUrl(song.thumbnailS3Key)
-        : null;
+  useEffect(() => {
+    const fetchSongs = async () => {
+      try {
+        const response = await fetch("/api/song");
+        if (response.ok) {
+          const songs = await response.json();
+          setSongsWithThumbnails(songs);
+          toast.success("Successfully loaded example songs.");
+        }
+      } catch (error) {
+        toast.error("Failed to load example songs.");
+        console.error("Failed to fetch songs:", error);
+      }
+    };
 
-      return {
-        id: song.id,
-        title: song.title,
-        instrumental: song.instrumental,
-        prompt: song.prompt,
-        lyrics: song.lyrics,
-        describedLyrics: song.describedLyrics,
-        fullDescribedSong: song.fullDescribedSong,
-        thumbnailUrl,
-        playUrl: null,
-        status: song.status,
-        createdByUserName: song.user?.name,
-        published: song.published,
-      };
-    }),
-  );
+    fetchSongs();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -141,8 +124,13 @@ export default async function HomePage() {
                     Listen to Examples
                   </DialogTitle>
                 </DialogHeader>
+                <DialogClose ref={closeExamplesDialogRef}></DialogClose>
                 {songsWithThumbnails.length > 0 ? (
-                  <TrackList tracks={songsWithThumbnails} isExamples />
+                  <TrackList
+                    tracks={songsWithThumbnails}
+                    isExamples
+                    closeExamplesDialogRef={closeExamplesDialogRef}
+                  />
                 ) : (
                   <p>No examples available</p>
                 )}

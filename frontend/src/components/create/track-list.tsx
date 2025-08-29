@@ -12,7 +12,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, type RefObject } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingDots from "@/components/loading-dots";
 import { getPlayUrl } from "@/actions/generation";
@@ -47,9 +47,11 @@ export interface Track {
 export default function TrackList({
   tracks,
   isExamples,
+  closeExamplesDialogRef,
 }: {
   tracks: Track[];
   isExamples?: boolean;
+  closeExamplesDialogRef?: RefObject<HTMLButtonElement | null>;
 }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -81,6 +83,8 @@ export default function TrackList({
       published: track.published,
       createdByUsername: track.createdByUserName,
     });
+
+    if (isExamples) closeExamplesDialogRef?.current?.click();
   };
   const handleRefresh = async () => {
     setIsRefreshing(true);

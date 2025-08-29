@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useTransition } from "react";
+import { useState, useEffect, useTransition, type RefObject } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { generateSong, type GenerateRequest } from "@/actions/generation";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const inspirationTags = [
   "80s synth-pop",
@@ -32,7 +33,13 @@ const styleTags = [
   "Reggae rhythms",
 ];
 
-export default function SongPanel({ isDialog }: { isDialog?: boolean }) {
+export default function SongPanel({
+  isDialog,
+  closeCreateSongRef,
+}: {
+  isDialog?: boolean;
+  closeCreateSongRef?: RefObject<HTMLButtonElement | null>;
+}) {
   const [mode, setMode] = useState<"simple" | "custom">("simple");
   const [description, setDescription] = useState("");
   const [instrumental, setInstrumental] = useState(false);
@@ -40,6 +47,7 @@ export default function SongPanel({ isDialog }: { isDialog?: boolean }) {
   const [lyrics, setLyrics] = useState("");
   const [styleInput, setStyleInput] = useState("");
   const [loading, startGenerating] = useTransition();
+  const router = useRouter();
 
   const [currentPlaceholderIndex, setCurrentPlaceholderIndex] = useState(0);
 
@@ -143,6 +151,10 @@ export default function SongPanel({ isDialog }: { isDialog?: boolean }) {
     startGenerating(async () => {
       try {
         await generateSong(requestBody);
+        if (isDialog) {
+          closeCreateSongRef?.current?.click();
+          router.push("/dashboard/create");
+        }
         setDescription("");
         setLyrics("");
         setStyleInput("");
