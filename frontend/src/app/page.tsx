@@ -26,30 +26,38 @@ import TrackList from "@/components/create/track-list";
 import { useEffect, useRef, useState, type ElementRef } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { getSongs, type Song } from "@/actions/song";
+import LoadingDots from "@/components/loading-dots";
 
 export default function HomePage() {
   const { data: session } = authClient.useSession();
   const closeExamplesDialogRef = useRef<ElementRef<"button">>(null);
+  const [songs, setSongs] = useState<Song[]>([]);
 
-  const [songsWithThumbnails, setSongsWithThumbnails] = useState([]);
+  const [gettingSongs, setGettingSongs] = useState(false);
 
   useEffect(() => {
-    const fetchSongs = async () => {
+    (async () => {
       try {
-        const response = await fetch("/api/song");
-        if (response.ok) {
-          const songs = await response.json();
-          setSongsWithThumbnails(songs);
-          toast.success("Successfully loaded example songs.");
-        }
+        setGettingSongs(true);
+        setSongs(await getSongs());
+        setGettingSongs(false);
       } catch (error) {
-        toast.error("Failed to load example songs.");
-        console.error("Failed to fetch songs:", error);
+        toast.error("Failed to load songs");
+        console.error(error);
       }
-    };
+    })();
+  }, [gettingSongs]);
 
-    fetchSongs();
-  }, []);
+  if (gettingSongs) {
+    <Dialog>
+      <DialogContent>
+        <p>
+          <LoadingDots text="Loading songs" />
+        </p>
+      </DialogContent>
+    </Dialog>;
+  }
 
   return (
     <div className="min-h-screen">
@@ -125,9 +133,9 @@ export default function HomePage() {
                   </DialogTitle>
                 </DialogHeader>
                 <DialogClose ref={closeExamplesDialogRef}></DialogClose>
-                {songsWithThumbnails.length > 0 ? (
+                {songs.length > 0 ? (
                   <TrackList
-                    tracks={songsWithThumbnails}
+                    tracks={songs}
                     isExamples
                     closeExamplesDialogRef={closeExamplesDialogRef}
                   />
