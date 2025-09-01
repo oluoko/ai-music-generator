@@ -40,7 +40,8 @@ export default function HomePage() {
     (async () => {
       try {
         setGettingSongs(true);
-        setSongs(await getSongs());
+        const allSongs = await getSongs();
+        setSongs(allSongs.slice(0, 5));
         setGettingSongs(false);
       } catch (error) {
         toast.error("Failed to load songs");
