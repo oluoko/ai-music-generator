@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface LogoProps {
   className?: string;
@@ -13,6 +14,7 @@ interface LogoProps {
 export default function Logo({ className, size = "sm", small }: LogoProps) {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     setMounted(true);
@@ -45,7 +47,7 @@ export default function Logo({ className, size = "sm", small }: LogoProps) {
     <h1
       className={`${className} ${getSizeClasses()} inline-block align-middle font-black tracking-tight`}
     >
-      {small ? (
+      {small || isMobile ? (
         <>
           <span className="text-primary">AI</span>
           <span
